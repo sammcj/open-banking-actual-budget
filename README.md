@@ -1,65 +1,77 @@
 # Actual Budget Importer for NZ Open Banking Standard
 
-## This project is still untested
+A lightweight service that pulls transaction data from a PaymentsNZ compliant API and posts it to an [Actual Budget](https://actualbudget.org/) server. Run it directly with Node.js or inside Docker to keep your budgeting data up to date.
 
-This project aims to provides a simple solution for importing bank transactions from the NZ bank accounts using the PaymentsNZ Account Information API standrd into an Actual Budget server. 
+## Table of Contents
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [How It Works](#how-it-works)
+- [Testing](#testing)
+- [License](#license)
 
 ## Features
-- Imports transactions from a PaymentsNZ compliant API to Actual Budget.
-- Runs at intervals specified by the `RUN_INTERVAL` environment variable.
+- Fetches transactions from banks that expose the PaymentsNZ Account Information API
+- Posts new transactions to an Actual Budget server
+- Repeats at the interval specified in `RUN_INTERVAL`
 
-## Requirements
-- Docker
-- Docker Compose
-- Bank API token
-- Actual Budget API credentials
+## Prerequisites
+- [Node.js](https://nodejs.org/) 18+ or Docker with Docker Compose
+- Access token for your bank's API
+- Credentials for your Actual Budget server
 
-## Setup
-
-1. Clone this repository:
-
+## Installation
+1. Clone the repository and install dependencies
    ```bash
    git clone <repo-url>
    cd nz-open-banking-actual-budget
    npm install
    ```
-2. Amend the .env Environment Variables file
-3. Build and run the Docker container using docker-compose:
-   ```
-   docker-compose up --build
-   ```
-## Environment Variables
+2. Create a `.env` file with your credentials as described below
 
-| Variable           | Description                                             |
-|--------------------|---------------------------------------------------------|
-| `ACTUAL_SERVER_URL` | URL of the Actual Budget server (e.g., `http://localhost:5006`). |
-| `ACTUAL_PASSWORD`   | Actual Budget server password. |
-| `ACTUAL_BUDGET_ACCOUNT_ID`| Actual Budget account ID |
-| `ACTUAL_CATEGORY_ID`   | Actual Budget default category for transactions. |
-| `BANK_API_URL`  | URL end point for accessing Bank API. |
-| `BANK_TOKEN` | Bearer token used to authenticate with the Bank API. |
-| `RUN_INTERVAL`      | Time interval to run the importer (e.g., `30m`, `2h`, `1d`). |
+## Configuration
+The application reads its configuration from environment variables. Below is a list of supported options.
 
-Make sure to keep your `.env` file private and never commit real credentials to source control.
+| Variable | Description |
+|----------|-------------|
+| `ACTUAL_SERVER_URL` | URL of the Actual Budget server (e.g. `http://localhost:5006`) |
+| `ACTUAL_PASSWORD` | Password for the Actual Budget server |
+| `ACTUAL_BUDGET_ACCOUNT_ID` | ID of the account to import transactions into |
+| `ACTUAL_CATEGORY_ID` | Default category ID for imported transactions |
+| `BANK_API_URL` | Endpoint for retrieving bank transactions |
+| `BANK_TOKEN` | Bearer token used to authenticate with the bank API |
+| `RUN_INTERVAL` | How often to run the importer, e.g. `30m`, `2h` or `1d` |
+
+Keep your `.env` file private and never commit real credentials to source control.
+
+## Usage
+### Run with Node.js
+```bash
+npm start
+```
+
+### Run with Docker Compose
+```bash
+docker-compose up --build
+```
 
 ## How It Works
+1. The importer authenticates with Actual Budget and your bank API.
+2. It downloads new transactions and converts them to Actual Budget's format.
+3. Imported transactions are posted to the budget account specified in your `.env` file.
+4. The process waits for `RUN_INTERVAL` before repeating.
 
-- On startup, the importer fetches transactions from the PaymentsNZ Account Information API and imports them into Actual Budget.
-- The importer runs at intervals specified by the `RUN_INTERVAL` environment variable (e.g., every 30 minutes or 2 hours).
-- Transaction data is mapped to Actual Budget's required format.
-
-## Testing and Coverage
-
-This project uses [Jest](https://jestjs.io/) for unit testing. Run tests with:
-
+## Testing
+Run the unit tests with Jest:
 ```bash
 npm test
 ```
-
-To generate a coverage report, execute:
-
+Generate a coverage report with:
 ```bash
 npx jest --coverage
 ```
 
-At the time of writing, overall coverage sits at around **77%** of statements.
+## License
+This project is licensed under the MIT License.
