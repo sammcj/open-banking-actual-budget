@@ -74,6 +74,11 @@ async function runImporter(intervalMs) {
 function convertToMs(interval) {
   const time = parseInt(interval.slice(0, -1), 10);
   const unit = interval.slice(-1);
+
+  if (!Number.isInteger(time) || time <= 0) {
+    throw new Error('Invalid time value. Use a positive integer followed by m, h, or d.');
+  }
+
   switch (unit) {
     case 'm':
       return time * 60 * 1000;
