@@ -1,6 +1,6 @@
 # Actual Budget Importer for NZ Open Banking Standard
 
-## This is completely untested and is just a quick base to start building from
+## This project started as a quick base to build from
 
 This project aims to provides a simple solution for importing bank transactions from the NZ bank accounts using the PaymentsNZ Account Information API standrd into an Actual Budget server. 
 
@@ -47,3 +47,19 @@ Make sure to keep your `.env` file private and never commit real credentials to 
 - On startup, the importer fetches transactions from the PaymentsNZ Account Information API and imports them into Actual Budget.
 - The importer runs at intervals specified by the `RUN_INTERVAL` environment variable (e.g., every 30 minutes or 2 hours).
 - Transaction data is mapped to Actual Budget's required format.
+
+## Testing and Coverage
+
+This project uses [Jest](https://jestjs.io/) for unit testing. Run tests with:
+
+```bash
+npm test
+```
+
+To generate a coverage report, execute:
+
+```bash
+npx jest --coverage
+```
+
+At the time of writing, overall coverage sits at around **77%** of statements.
