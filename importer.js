@@ -55,19 +55,19 @@ async function importTransactions(transactions) {
 
 async function runImporter(intervalMs) {
   try {
-    await connectActualBudget();
-    const transactions = await getAccountData();
+    await module.exports.connectActualBudget();
+    const transactions = await module.exports.getAccountData();
     const transformed = transactions.map(tx => ({
       transactionDate: tx.transactionDate,
       amount: tx.amount,
       merchantName: tx.merchantName,
     }));
-    await importTransactions(transformed);
+    await module.exports.importTransactions(transformed);
     console.log('Transactions imported successfully');
   } catch (err) {
     console.error('Error importing transactions:', err.message);
   } finally {
-    setTimeout(() => runImporter(intervalMs), intervalMs);
+    setTimeout(() => module.exports.runImporter(intervalMs), intervalMs);
   }
 }
 
@@ -91,4 +91,13 @@ function convertToMs(interval) {
   }
 }
 
-module.exports = { validateEnv, convertToMs, runImporter };
+// Export additional functions for easier testing
+module.exports = {
+  validateEnv,
+  convertToMs,
+  runImporter,
+  // the following exports are primarily for unit testing
+  connectActualBudget,
+  getAccountData,
+  importTransactions,
+};
