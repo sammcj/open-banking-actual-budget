@@ -20,7 +20,8 @@ This project aims to provides a simple solution for importing bank transactions 
 
    ```bash
    git clone <repo-url>
-   cd customer-importer
+   cd nz-open-banking-actual-budget
+   npm install
    ```
 2. Amend the .env Environment Variables file
 3. Build and run the Docker container using docker-compose:
@@ -32,11 +33,14 @@ This project aims to provides a simple solution for importing bank transactions 
 | Variable           | Description                                             |
 |--------------------|---------------------------------------------------------|
 | `ACTUAL_SERVER_URL` | URL of the Actual Budget server (e.g., `http://localhost:5006`). |
-| `ACTUAL_PASSWORD`   | Actual Budget server password.                          |
-| `ACTUAL_BUDGET_ACCOUNT_ID`| Actual Budget account ID                          |
-| `ACTUAL_CATEGORY_ID`   | Actual Budget default category for transactions.     |
-| `BANK_API_URL`  | URL end point for accessing Bank API.               |
+| `ACTUAL_PASSWORD`   | Actual Budget server password. |
+| `ACTUAL_BUDGET_ACCOUNT_ID`| Actual Budget account ID |
+| `ACTUAL_CATEGORY_ID`   | Actual Budget default category for transactions. |
+| `BANK_API_URL`  | URL end point for accessing Bank API. |
+| `BANK_TOKEN` | Bearer token used to authenticate with the Bank API. |
 | `RUN_INTERVAL`      | Time interval to run the importer (e.g., `30m`, `2h`, `1d`). |
+
+Make sure to keep your `.env` file private and never commit real credentials to source control.
 
 ## How It Works
 
