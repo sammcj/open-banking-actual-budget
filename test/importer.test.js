@@ -13,6 +13,10 @@ describe('convertToMs', () => {
   test('throws on invalid unit', () => {
     expect(() => convertToMs('5x')).toThrow();
   });
+  test('throws on invalid time value', () => {
+    expect(() => convertToMs('0h')).toThrow('Invalid time value');
+    expect(() => convertToMs('h')).toThrow('Invalid time value');
+  });
 });
 
 describe('validateEnv', () => {
